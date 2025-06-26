@@ -5,7 +5,7 @@ import z from "zod/v3";
 const tags = ["Notes"]
 
 export const list = createRoute({
-  path: "/notes",
+  path: "/",
   method: "get",
   tags,
   responses: {
@@ -23,7 +23,7 @@ export const list = createRoute({
 });
 
 export const create = createRoute({
-  path: "/notes",
+  path: "/",
   method: "post",
   tags,
   request: {
@@ -47,5 +47,32 @@ export const create = createRoute({
   }
 });
 
+export const remove = createRoute({
+  path: "/:id",
+  method: "delete",
+  tags,
+  request: {
+    params: z.object({
+      id: z.coerce.number().int().positive()
+    })
+  },
+  responses: {
+    204: {
+      description: "The note was deleted"
+    },
+    404: {
+      description: "The note was not found",
+      content: {
+        "application/json": {
+          schema: z.object({
+            message: z.string()
+          })
+        }
+      }
+    }
+  }
+})
+
 export type List = typeof list;
 export type Create = typeof create;
+export type Remove = typeof remove;

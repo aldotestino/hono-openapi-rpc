@@ -1,3 +1,4 @@
+import { BASE_PATH } from "./constants";
 import type { AppOpenAPI } from "./types";
 import { Scalar } from "@scalar/hono-api-reference";
 
@@ -13,7 +14,7 @@ export function configOpenApi(app: AppOpenAPI) {
   app.get(
     "/reference",
     Scalar({
-      url: "/doc",
+      url: `${BASE_PATH}/doc`,
       defaultHttpClient: {
         targetKey: "js",
         clientKey: "fetch",

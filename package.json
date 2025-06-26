@@ -3,7 +3,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "api": "bun run --cwd apps/api dev"
+    "api": "bun run --cwd apps/api dev",
+    "web": "bun run --cwd apps/web dev"
   },
   "workspaces": [
     "packages/*",

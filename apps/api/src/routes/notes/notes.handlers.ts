@@ -1,4 +1,4 @@
-import type { Create, List } from "./notes.routes";
+import type { Create, List, Remove } from "./notes.routes";
 import { notesDB } from "../../lib/notes-db";
 import type { AppRouteHandler } from "../../lib/types";
 
@@ -14,4 +14,17 @@ export const create: AppRouteHandler<Create> = async (c) => {
   const createdNote = notesDB.create(note);
 
   return c.json(createdNote, 201);
+}
+
+export const remove: AppRouteHandler<Remove> = async (c) => {
+  const id = c.req.param("id");
+
+  const res = notesDB.delete(Number(id));
+
+  if (!res) {
+    c.status(404)
+    return c.json({ message: "Note not found" });
+  }
+
+  return c.body(null, 204);
 }
