@@ -24,5 +24,9 @@ export default defineConfig({
         changeOrigin: true,
       }
     }
+  },
+  build: {
+    outDir: '../api/public',
+    emptyOutDir: true,
   }
 })

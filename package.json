@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "api": "bun run --cwd apps/api dev",
-    "web": "bun run --cwd apps/web dev"
+    "web": "bun run --cwd apps/web dev",
+    "build": "bun run --cwd apps/web build",
+    "start": "bun run --cwd apps/api start"
   },
   "workspaces": [
     "packages/*",
