@@ -1,12 +1,13 @@
 import { configOpenApi } from "./lib/config-open-api"
 import { registerRoutes } from "./routes"
 import { createApp } from "./lib/create-app"
-import { BASE_PATH } from "./lib/constants";
 
 const app = registerRoutes(createApp());
 configOpenApi(app);
 
+const PORT = process.env.PORT || 4000
+
 export default {
-  port: 4000,
+  port: PORT,
   fetch: app.fetch
 }
