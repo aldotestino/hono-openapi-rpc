@@ -1,6 +1,6 @@
 import type { InsertNote, Note } from 'schema';
 
-class NotesDB {
+export class NotesDB {
   private notes: Note[] = [];
   private nextId = 1;
 
