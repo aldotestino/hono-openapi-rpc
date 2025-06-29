@@ -1,13 +1,13 @@
-import { configOpenApi } from "./lib/config-open-api"
-import { registerRoutes } from "./routes"
-import { createApp } from "./lib/create-app"
+import { configOpenApi } from './lib/config-open-api';
+import { createApp } from './lib/create-app';
+import { registerRoutes } from './routes';
 
 const app = registerRoutes(createApp());
 configOpenApi(app);
 
-const PORT = process.env.PORT || 4000
+const PORT = process.env.PORT || 4000;
 
 export default {
   port: PORT,
-  fetch: app.fetch
-}
+  fetch: app.fetch,
+};

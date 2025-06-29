@@ -1,39 +1,53 @@
-import { createFileRoute, useRouter } from '@tanstack/react-router'
-import { useForm } from 'react-hook-form'
-import { insertNoteSchema, type InsertNote } from "schema"
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Input } from '@/components/ui/input'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Button } from '@/components/ui/button'
-import { useMutation } from '@tanstack/react-query'
-import { client } from '@/lib/api/client'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Loader, Plus } from 'lucide-react'
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { createFileRoute, useRouter } from '@tanstack/react-router';
+import { Loader, Plus } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { type InsertNote, insertNoteSchema } from 'schema';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { client } from '@/lib/api/client';
 
 export const Route = createFileRoute('/new')({
   component: NewNoteComponent,
-})
+});
 
 function NewNoteComponent() {
-
   const form = useForm<InsertNote>({
     resolver: zodResolver(insertNoteSchema),
     defaultValues: {
-      title: "",
-    }
+      title: '',
+    },
   });
 
-  const router = useRouter()
+  const router = useRouter();
 
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: (data: InsertNote) => client.api.notes.$post({
-      json: data,
-    }),
+    mutationFn: (data: InsertNote) =>
+      client.api.notes.$post({
+        json: data,
+      }),
     onSuccess: () => {
       router.navigate({
-        to: "/",
+        to: '/',
       });
-    }
+    },
   });
 
   function onSubmit(data: InsertNote) {
@@ -42,13 +56,11 @@ function NewNoteComponent() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-4">
+      <form className="space-y-4 p-4" onSubmit={form.handleSubmit(onSubmit)}>
         <Card>
           <CardHeader>
             <CardTitle>New Note</CardTitle>
-            <CardDescription>
-              Create a new note to get started.
-            </CardDescription>
+            <CardDescription>Create a new note to get started.</CardDescription>
           </CardHeader>
           <CardContent>
             <FormField
@@ -65,14 +77,18 @@ function NewNoteComponent() {
               )}
             />
           </CardContent>
-          <CardFooter className='flex justify-end'>
-            <Button type="submit" disabled={isPending} className='cursor-pointer'>
-              {isPending ? <Loader className='animate-spin' /> : <Plus />}
+          <CardFooter className="flex justify-end">
+            <Button
+              className="cursor-pointer"
+              disabled={isPending}
+              type="submit"
+            >
+              {isPending ? <Loader className="animate-spin" /> : <Plus />}
               Create Note
             </Button>
           </CardFooter>
         </Card>
       </form>
     </Form>
-  )
+  );
 }

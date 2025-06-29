@@ -1,4 +1,4 @@
-import type { InsertNote, Note } from "schema";
+import type { InsertNote, Note } from 'schema';
 
 export class NotesDB {
   private notes: Note[] = [];
@@ -9,12 +9,11 @@ export class NotesDB {
   }
 
   create(note: InsertNote) {
-
     const newNote = {
       id: this.nextId++,
       title: note.title,
-      createdAt: new Date()
-    }
+      createdAt: new Date(),
+    };
 
     this.notes.push(newNote);
 
@@ -27,7 +26,7 @@ export class NotesDB {
     this.notes = this.notes.filter((note) => note.id !== id);
 
     if (prevLength === this.notes.length) {
-      return false
+      return false;
     }
 
     return true;

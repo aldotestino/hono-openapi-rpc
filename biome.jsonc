@@ -1,0 +1,14 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.0.5/schema.json",
+  "extends": ["ultracite"],
+  "files": {
+    "ignoreUnknown": true,
+    "includes": [
+      "**/*",
+      "!**/components/ui/**",
+      "!**/routeTree.gen.ts",
+      "!**/reportWebVitals.ts",
+      "!**/styles.css"
+    ]
+  }
+}
