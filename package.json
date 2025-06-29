@@ -6,7 +6,8 @@
     "api": "bun run --cwd apps/api dev",
     "web": "bun run --cwd apps/web dev",
     "build": "bun run --cwd apps/web build",
-    "start": "bun run --cwd apps/api start"
+    "start": "bun run --cwd apps/api start",
+    "test": "bun run --cwd apps/api test"
   },
   "workspaces": [
     "packages/*",
