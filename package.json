@@ -6,14 +6,17 @@
     "api": "bun run --cwd apps/api dev",
     "web": "bun run --cwd apps/web dev",
     "build": "bun run --cwd apps/web build",
-    "start": "bun run --cwd apps/api start"
+    "start": "bun run --cwd apps/api start",
+    "format": "ultracite format"
   },
   "workspaces": [
     "packages/*",
     "apps/*"
   ],
   "devDependencies": {
-    "@types/bun": "latest"
+    "@biomejs/biome": "2.0.5",
+    "@types/bun": "latest",
+    "ultracite": "5.0.26"
   },
   "peerDependencies": {
     "typescript": "^5"
