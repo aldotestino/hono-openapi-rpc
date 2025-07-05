@@ -1,3 +1,6 @@
+[![CI](https://github.com/aldotestino/hono-openapi-rpc/actions/workflows/test.yml/badge.svg)](https://github.com/aldotestino/hono-openapi-rpc/actions/workflows/test.yml)
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/Namq7J?referralCode=tgV_hi)
+
 # hono-openapi-rpc
 
 A modern monorepo for building full-stack applications with [Bun](https://bun.sh), [Hono](https://hono.dev), [OpenAPI](https://swagger.io/specification/), and [TanStack Router](https://tanstack.com/router). This project is organized as a Bun workspace with separate API and Web applications, plus a shared schema package.
