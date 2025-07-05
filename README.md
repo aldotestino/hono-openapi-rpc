@@ -1,4 +1,5 @@
 [![CI](https://github.com/aldotestino/hono-openapi-rpc/actions/workflows/test.yml/badge.svg)](https://github.com/aldotestino/hono-openapi-rpc/actions/workflows/test.yml)
+![GitHub deployments](https://img.shields.io/github/deployments/aldotestino/hono-openapi-rpc/production?logo=railway&label=Deployment)
 [![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/Namq7J?referralCode=tgV_hi)
 
 # hono-openapi-rpc
