@@ -1,14 +1,14 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import type { Note } from 'db/schema';
 import { Loader, Trash2 } from 'lucide-react';
-import type { Note } from 'schema';
 import { Button } from '@/components/ui/button';
 import { client } from '@/lib/api/client';
 
-type ApiNote = Pick<Note, 'id' | 'title'> & {
-  createdAt: string;
-};
-
-function NoteRow({ note }: { note: ApiNote }) {
+function NoteRow({
+  note,
+}: {
+  note: Omit<Note, 'createdAt'> & { createdAt: string };
+}) {
   const queryClient = useQueryClient();
 
   const { mutateAsync, isPending } = useMutation({
@@ -26,19 +26,22 @@ function NoteRow({ note }: { note: ApiNote }) {
   });
 
   return (
-    <div className="flex items-center justify-between gap-4 border-b p-4">
-      <div className="flex items-center gap-4">
-        <span className="text-muted-foreground text-sm">{note.id}</span>
-        <span>{note.title}</span>
+    <div className="space-y-2 border-b p-4">
+      <div className="flex items-center justify-between gap-4">
+        <p className="flex items-center gap-2">
+          <span className="text-muted-foreground text-sm">{note.id}</span>
+          <span className="font-semibold text-lg">{note.title}</span>
+        </p>
+        <Button
+          className="cursor-pointer"
+          onClick={() => mutateAsync()}
+          size="icon"
+          variant="ghost"
+        >
+          {isPending ? <Loader className="animate-spin" /> : <Trash2 />}
+        </Button>
       </div>
-      <Button
-        className="cursor-pointer"
-        onClick={() => mutateAsync()}
-        size="icon"
-        variant="destructive"
-      >
-        {isPending ? <Loader className="animate-spin" /> : <Trash2 />}
-      </Button>
+      <p className="text-muted-foreground">{note.description}</p>
     </div>
   );
 }

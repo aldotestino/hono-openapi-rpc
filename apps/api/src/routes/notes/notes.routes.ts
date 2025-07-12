@@ -1,6 +1,6 @@
 import { createRoute } from '@hono/zod-openapi';
-import { insertNoteSchema, noteSchema } from 'schema';
-import z from 'zod/v3';
+import { insertNotesSchema, notesSchema } from 'db/schema';
+import z from 'zod/v4';
 
 const tags = ['Notes'];
 
@@ -14,7 +14,7 @@ export const list = createRoute({
       content: {
         'application/json': {
           schema: z.object({
-            notes: z.array(noteSchema),
+            notes: z.array(notesSchema),
           }),
         },
       },
@@ -30,7 +30,7 @@ export const create = createRoute({
     body: {
       content: {
         'application/json': {
-          schema: insertNoteSchema,
+          schema: insertNotesSchema,
         },
       },
     },
@@ -40,7 +40,7 @@ export const create = createRoute({
       description: 'The created note',
       content: {
         'application/json': {
-          schema: noteSchema,
+          schema: notesSchema,
         },
       },
     },
