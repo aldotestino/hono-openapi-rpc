@@ -15,7 +15,7 @@ afterAll(async () => {
   await db.delete(user).where(eq(user.id, TEST_USER.id));
 });
 
-describe('🗒️ Notes', async () => {
+describe('🗒️ Notes', () => {
   const client = testClient(createTestApp(notesRouter));
 
   let createdNoteId: number;
@@ -56,6 +56,4 @@ describe('🗒️ Notes', async () => {
 
     expect(response.status).toBe(204);
   });
-
-  await db.delete(user).where(eq(user.id, '1'));
 });
