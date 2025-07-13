@@ -14,7 +14,7 @@ hono-openapi-rpc/
     api/      # Hono-based API server (OpenAPI, Zod, Bun)
     web/      # React web app (Vite, TanStack Router, Tailwind CSS)
   packages/
-    schema/   # Shared Zod schemas for API and Web
+    db/       # Shared Drizzle ORM schema and database client for the monorepo
   package.json
   README.md
   bun.lock
@@ -27,6 +27,8 @@ hono-openapi-rpc/
 - Node.js (for some tooling, optional)
 - [Git](https://git-scm.com/)
 - [TypeScript](https://www.typescriptlang.org/) (peer dependency)
+- [Neon](https://neon.tech/) project for the PostgreSQL database
+- GitHub OAuth app (for authentication) ([create one here](https://github.com/settings/developers))
 
 ## Getting Started
 
@@ -84,12 +86,18 @@ bun run start
 
 From the root, you can use these scripts:
 
-| Script   | Description                                 |
-|----------|---------------------------------------------|
-| `api`    | Run the API server in dev mode              |
-| `web`    | Run the web app in dev mode                 |
-| `build`  | Build the web app for production            |
-| `start`  | Start the API server (serves static + API)  |
+| Script         | Description                                                      |
+|----------------|------------------------------------------------------------------|
+| `api`          | Run the API server in dev mode                                   |
+| `web`          | Run the web app in dev mode                                      |
+| `build`        | Build the web app for production                                 |
+| `start`        | Start the API server (serves static + API)                       |
+| `db:generate`  | Generate database migrations (from `packages/db`)              |
+| `db:migrate`   | Run database migrations (from `packages/db`)                     |
+| `db:push`      | Push schema changes to the database (from `packages/db`)         |
+| `db:studio`    | Open database studio UI (from `packages/db`)                     |
+| `test`         | Run API tests (from `apps/api`)                                  |
+| `format`       | Format codebase using Biome/Ultracite                            |
 
 ## Packages
 
@@ -111,10 +119,12 @@ From the root, you can use these scripts:
 - shadcn/ui components
 - Proxies `/api` requests to the API server
 
-### packages/schema
+### packages/db
 
-- Shared Zod schemas for API and Web
-- Used for type-safe validation and OpenAPI generation
+- Shared Drizzle ORM schema and database client for the monorepo
+- Provides schema definitions for users, notes, accounts, sessions, and verification
+- Exports Zod schemas for type-safe validation and OpenAPI generation
+- Used by both API and Web for consistent data modeling and validation
 
 ## Development Notes
 
@@ -138,3 +148,5 @@ From the root, you can use these scripts:
 - [Zod](https://zod.dev)
 - [shadcn/ui](https://ui.shadcn.com/)
 - [Tailwind CSS](https://tailwindcss.com/)
+- [Neon](https://neon.tech/)
+- [better-auth](https://www.better-auth.com/)
