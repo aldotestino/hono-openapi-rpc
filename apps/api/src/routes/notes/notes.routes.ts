@@ -3,9 +3,10 @@ import { insertNotesSchema, notesSchema } from 'db/schema';
 import z from 'zod/v4';
 
 const tags = ['Notes'];
+const basePath = '/notes';
 
 export const list = createRoute({
-  path: '/',
+  path: basePath,
   method: 'get',
   tags,
   responses: {
@@ -23,7 +24,7 @@ export const list = createRoute({
 });
 
 export const create = createRoute({
-  path: '/',
+  path: basePath,
   method: 'post',
   tags,
   request: {
@@ -48,7 +49,7 @@ export const create = createRoute({
 });
 
 export const remove = createRoute({
-  path: '/:id',
+  path: `${basePath}/:id`,
   method: 'delete',
   tags,
   request: {

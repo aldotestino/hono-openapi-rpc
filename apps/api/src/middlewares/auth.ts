@@ -1,4 +1,5 @@
 import { auth } from '../lib/auth';
+import { UnauthorizedError } from '../lib/errors';
 import { createMiddleware } from '../lib/factory';
 
 export const withAuth = createMiddleware(async (c, next) => {
@@ -17,10 +18,10 @@ export const withAuth = createMiddleware(async (c, next) => {
   return next();
 });
 
-export const requireAuth = createMiddleware((c, next) => {
+export const requireAuth = createMiddleware(async (c, next) => {
   if (!c.get('user')) {
-    throw new Error('Unauthorized');
+    throw new UnauthorizedError('Unauthorized');
   }
 
-  return next();
+  return await next();
 });
