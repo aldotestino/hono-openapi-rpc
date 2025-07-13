@@ -5,9 +5,8 @@ import { BASE_PATH } from './constants';
 import { createRouter } from './create-router';
 import type { AppOpenAPI } from './types';
 
-export function createApp() {
+export function createApp({ useLogger = true }: { useLogger?: boolean } = {}) {
   const app = createRouter()
-    .get('/health', (c) => c.json({ status: 'ok' }))
     // Serve static files if path does not start with BASE_PATH
     .use('*', (c, next) => {
       if (c.req.path.startsWith(BASE_PATH)) {
@@ -16,7 +15,7 @@ export function createApp() {
       return serveStatic({ root: './public' })(c, next);
     })
     .use(requestId())
-    .use(logger())
+    .use(useLogger ? logger() : (_, next) => next())
     .basePath(BASE_PATH) as AppOpenAPI;
 
   return app;
