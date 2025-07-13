@@ -11,6 +11,8 @@ import {
 import { routeTree } from './routeTree.gen';
 
 import './styles.css';
+import ErrorComponent from '@/components/error-component.tsx';
+import PendingComponent from '@/components/pending-component.tsx';
 import reportWebVitals from './reportWebVitals.ts';
 
 // Create a new router instance
@@ -23,6 +25,10 @@ const router = createRouter({
   scrollRestoration: true,
   defaultStructuralSharing: true,
   defaultPreloadStaleTime: 0,
+  defaultErrorComponent: ({ error }) => (
+    <ErrorComponent error={error.message} />
+  ),
+  defaultPendingComponent: PendingComponent,
 });
 
 // Register the router instance for type safety
