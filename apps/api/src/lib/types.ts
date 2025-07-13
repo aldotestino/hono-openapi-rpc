@@ -12,6 +12,15 @@ export type AppEnv = {
   };
 };
 
+// Environment for authorized routes where user and session are guaranteed to be non-null
+export type AuthorizedAppEnv = {
+  Bindings: AppEnv['Bindings'];
+  Variables: {
+    user: NonNullable<typeof auth.$Infer.Session.user>;
+    session: NonNullable<typeof auth.$Infer.Session.session>;
+  };
+};
+
 // biome-ignore lint/complexity/noBannedTypes: this is needed for the rpc client types
 export type AppOpenAPI<S extends Schema = {}> = OpenAPIHono<
   AppEnv,
@@ -20,3 +29,8 @@ export type AppOpenAPI<S extends Schema = {}> = OpenAPIHono<
 >;
 
 export type AppRouteHandler<R extends RouteConfig> = RouteHandler<R, AppEnv>;
+
+export type AuthorizedAppRouteHandler<R extends RouteConfig> = RouteHandler<
+  R,
+  AuthorizedAppEnv
+>;

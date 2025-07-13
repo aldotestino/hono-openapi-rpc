@@ -1,9 +1,21 @@
-import { describe, expect, test } from 'bun:test';
+import { afterAll, beforeAll, describe, expect, test } from 'bun:test';
+import db from 'db';
+import { user } from 'db/schema';
+import { eq } from 'drizzle-orm';
 import { testClient } from 'hono/testing';
+import { TEST_USER } from '../../lib/constants';
 import { createTestApp } from '../../lib/factory';
 import notesRouter from './notes.index';
 
-describe('🗒️ Notes', () => {
+beforeAll(async () => {
+  await db.insert(user).values(TEST_USER);
+});
+
+afterAll(async () => {
+  await db.delete(user).where(eq(user.id, TEST_USER.id));
+});
+
+describe('🗒️ Notes', async () => {
   const client = testClient(createTestApp(notesRouter));
 
   let createdNoteId: number;
@@ -44,4 +56,6 @@ describe('🗒️ Notes', () => {
 
     expect(response.status).toBe(204);
   });
+
+  await db.delete(user).where(eq(user.id, '1'));
 });

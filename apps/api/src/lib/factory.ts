@@ -6,8 +6,13 @@ import { requestId } from 'hono/request-id';
 import { requireAuth, withAuth } from '../middlewares/auth';
 import { onError } from '../middlewares/error';
 import { auth } from './auth';
-import { BASE_PATH } from './constants';
-import type { AppEnv, AppOpenAPI, AppRouteHandler } from './types';
+import { BASE_PATH, TEST_USER } from './constants';
+import type {
+  AppEnv,
+  AppOpenAPI,
+  AppRouteHandler,
+  AuthorizedAppRouteHandler,
+} from './types';
 
 export function createRouter() {
   return new OpenAPIHono<AppEnv>({
@@ -40,13 +45,28 @@ export function createApp({ useLogger = true }: { useLogger?: boolean } = {}) {
 }
 
 export function createTestApp<S extends Schema>(router: AppOpenAPI<S>) {
-  return createRouter().basePath(BASE_PATH).route('/', router).onError(onError);
+  return createRouter()
+    .use((c, next) => {
+      c.set('user', TEST_USER);
+
+      return next();
+    })
+    .basePath(BASE_PATH)
+    .route('/', router)
+    .onError(onError);
 }
 
 export function createHandler<R extends RouteConfig>(
   _config: R,
   handler: AppRouteHandler<R>
 ): AppRouteHandler<R> {
+  return handler;
+}
+
+export function createAuthorizedHandler<R extends RouteConfig>(
+  _config: R,
+  handler: AuthorizedAppRouteHandler<R>
+): AuthorizedAppRouteHandler<R> {
   return handler;
 }
 

@@ -1,34 +1,49 @@
 import db from 'db';
 import { notes } from 'db/schema';
-import { eq } from 'drizzle-orm';
-import { createHandler } from '../../lib/factory';
+import { and, eq } from 'drizzle-orm';
+import { createAuthorizedHandler } from '../../lib/factory';
 import {
   create as createRoute,
   list as listRoute,
   remove as removeRoute,
 } from './notes.routes';
 
-export const list = createHandler(listRoute, async (c) => {
-  const allNotes = await db.query.notes.findMany();
+export const list = createAuthorizedHandler(listRoute, async (c) => {
+  const user = c.get('user');
+
+  const allNotes = await db
+    .select()
+    .from(notes)
+    .where(eq(notes.userId, user.id));
 
   return c.json({ notes: allNotes }, 200);
 });
 
-export const create = createHandler(createRoute, async (c) => {
+export const create = createAuthorizedHandler(createRoute, async (c) => {
   const note = c.req.valid('json');
 
-  const [createdNote] = await db.insert(notes).values(note).returning();
+  const user = c.get('user');
+
+  const [createdNote] = await db
+    .insert(notes)
+    .values({
+      ...note,
+      userId: user.id,
+    })
+    .returning();
 
   return c.json(createdNote, 201);
 });
 
-export const remove = createHandler(removeRoute, async (c) => {
+export const remove = createAuthorizedHandler(removeRoute, async (c) => {
   const id = c.req.param('id');
   const parsedId = Number.parseInt(id, 10);
 
+  const user = c.get('user');
+
   const [note] = await db
     .delete(notes)
-    .where(eq(notes.id, parsedId))
+    .where(and(eq(notes.id, parsedId), eq(notes.userId, user.id)))
     .returning();
 
   if (!note) {
