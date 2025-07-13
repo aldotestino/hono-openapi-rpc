@@ -1,6 +1,6 @@
 import { createRoute } from '@hono/zod-openapi';
 import { z } from 'zod/v4';
-import { createRouter } from '../lib/create-router';
+import { createRouter } from '../lib/factory';
 import type { AppRouteHandler } from '../lib/types';
 
 const tags = ['Health'];

@@ -22,12 +22,12 @@ export function configOpenApi(app: AppOpenAPI) {
     Scalar({
       sources: [
         {
-          url: `${BASE_PATH}/doc/auth`,
-          title: 'Auth',
-        },
-        {
           url: `${BASE_PATH}/doc/api`,
           title: 'Api',
+        },
+        {
+          url: `${BASE_PATH}/doc/auth`,
+          title: 'Auth',
         },
       ],
       defaultHttpClient: {

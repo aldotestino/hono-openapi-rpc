@@ -1,10 +1,17 @@
+import { OpenAPIHono, type RouteConfig } from '@hono/zod-openapi';
 import { serveStatic } from 'hono/bun';
 import { logger } from 'hono/logger';
 import { requestId } from 'hono/request-id';
+import type { MiddlewareHandler } from 'hono/types';
 import { auth } from './auth';
 import { BASE_PATH } from './constants';
-import { createRouter } from './create-router';
-import type { AppOpenAPI } from './types';
+import type { AppEnv, AppOpenAPI, AppRouteHandler } from './types';
+
+export function createRouter() {
+  return new OpenAPIHono<AppEnv>({
+    strict: false,
+  });
+}
 
 export function createApp({ useLogger = true }: { useLogger?: boolean } = {}) {
   const app = createRouter()
@@ -23,4 +30,15 @@ export function createApp({ useLogger = true }: { useLogger?: boolean } = {}) {
     .basePath(BASE_PATH) as AppOpenAPI;
 
   return app;
+}
+
+export function createHandler<R extends RouteConfig>(
+  _config: R,
+  handler: AppRouteHandler<R>
+): AppRouteHandler<R> {
+  return handler;
+}
+
+export function createMiddleware(middleware: MiddlewareHandler<AppEnv>) {
+  return middleware;
 }

@@ -72,7 +72,3 @@ export const remove = createRoute({
     },
   },
 });
-
-export type List = typeof list;
-export type Create = typeof create;
-export type Remove = typeof remove;

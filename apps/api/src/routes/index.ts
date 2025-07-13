@@ -1,5 +1,5 @@
 import { BASE_PATH } from '../lib/constants';
-import { createRouter } from '../lib/create-router';
+import { createRouter } from '../lib/factory';
 import type { AppOpenAPI } from '../lib/types';
 import health from './health';
 import notes from './notes/notes.index';

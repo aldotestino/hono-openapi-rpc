@@ -1,5 +1,9 @@
-import { createRouter } from '../../lib/create-router';
-import { create, list, remove } from './notes.handlers';
+import { createRouter } from '../../lib/factory';
+import {
+  create as createHandler,
+  list as listHandler,
+  remove as removeHandler,
+} from './notes.handlers';
 import {
   create as createRoute,
   list as listRoute,
@@ -7,8 +11,8 @@ import {
 } from './notes.routes';
 
 const router = createRouter()
-  .openapi(listRoute, list)
-  .openapi(createRoute, create)
-  .openapi(removeRoute, remove);
+  .openapi(listRoute, listHandler)
+  .openapi(createRoute, createHandler)
+  .openapi(removeRoute, removeHandler);
 
 export default router;

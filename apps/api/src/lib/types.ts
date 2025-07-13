@@ -1,11 +1,14 @@
 import type { OpenAPIHono, RouteConfig, RouteHandler } from '@hono/zod-openapi';
+import type { auth } from './auth';
 import type { BASE_PATH } from './constants';
 
 export type AppEnv = {
   // biome-ignore lint/complexity/noBannedTypes: this is a placeholder for bindings
   Bindings: {};
-  // biome-ignore lint/complexity/noBannedTypes: this is a placeholder for variables
-  Variables: {};
+  Variables: {
+    user: typeof auth.$Infer.Session.user | null;
+    session: typeof auth.$Infer.Session.session | null;
+  };
 };
 
 // biome-ignore lint/complexity/noBannedTypes: this is needed for the rpc client types
