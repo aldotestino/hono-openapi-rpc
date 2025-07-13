@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { testClient } from 'hono/testing';
-import { createApp } from './lib/create-app';
+import { createApp } from './lib/factory';
 import { registerRoutes } from './routes';
 
 describe('Api tests', () => {
