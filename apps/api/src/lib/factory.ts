@@ -1,10 +1,10 @@
 import { OpenAPIHono, type RouteConfig } from '@hono/zod-openapi';
 import type { MiddlewareHandler, Schema } from 'hono';
-import { serveStatic } from 'hono/bun';
 import { logger } from 'hono/logger';
 import { requestId } from 'hono/request-id';
 import { requireAuth, withAuth } from '../middlewares/auth';
 import { onError } from '../middlewares/error';
+import { serveWebApp } from '../middlewares/serve-web-app';
 import { auth } from './auth';
 import { BASE_PATH, TEST_USER } from './constants';
 import type { AppEnv, AppOpenAPI, AppRouteHandler } from './types';
@@ -17,13 +17,7 @@ export function createRouter() {
 
 export function createApp({ useLogger = true }: { useLogger?: boolean } = {}) {
   const app = createRouter()
-    // Serve static files if path does not start with BASE_PATH
-    .use('*', (c, next) => {
-      if (c.req.path.startsWith(BASE_PATH)) {
-        return next();
-      }
-      return serveStatic({ root: './public' })(c, next);
-    })
+    .use('*', serveWebApp)
     .basePath(BASE_PATH) as AppOpenAPI;
 
   app
