@@ -59,7 +59,7 @@ function NewNotePage() {
   }
 
   return (
-    <div className="p-4">
+    <div className="overflow-y-auto p-4">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <Card>

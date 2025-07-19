@@ -1,4 +1,4 @@
-import { createFileRoute, Navigate } from '@tanstack/react-router';
+import { createFileRoute, Link, Navigate } from '@tanstack/react-router';
 import { FaGithub } from 'react-icons/fa';
 import EmailSignIn from '@/components/email-sign-in';
 import { Button } from '@/components/ui/button';
@@ -48,12 +48,12 @@ function RouteComponent() {
                 <FaGithub />
                 Login with GitHub
               </Button>
-              {/* <div className="text-center text-sm">
+              <div className="text-center text-sm">
                 Don&apos;t have an account?{' '}
-                <a className="underline underline-offset-4" href="#">
+                <Link className="underline underline-offset-4" to="/signup">
                   Sign up
-                </a>
-              </div> */}
+                </Link>
+              </div>
             </div>
           </CardContent>
         </Card>
