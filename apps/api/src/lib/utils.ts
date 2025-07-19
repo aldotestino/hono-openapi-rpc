@@ -24,7 +24,7 @@ export const getPeriodStart = (granularity: Granularity) => {
     case 'month':
       return subMonths(today, 10);
     default:
-      return subYears(today, 10);
+      return subYears(today, 5);
   }
 };
 
@@ -45,12 +45,12 @@ export const getPeriodByGranularity = (
 };
 
 export const getNotesByPeriod = (notes: Note[], granularity: Granularity) => {
-  const grouped = Object.groupBy(notes, (note) =>
-    getPeriodByGranularity(note.createdAt, granularity)
-  );
+  const grouped = new Map<string, number>();
 
-  return Object.entries(grouped).map(([period, n]) => ({
-    period,
-    notes: n?.length ?? 0,
-  }));
+  for (const note of notes) {
+    const period = getPeriodByGranularity(note.createdAt, granularity);
+    grouped.set(period, (grouped.get(period) || 0) + 1);
+  }
+
+  return Array.from(grouped, ([period, count]) => ({ period, notes: count }));
 };

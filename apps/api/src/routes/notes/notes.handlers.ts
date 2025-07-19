@@ -1,6 +1,6 @@
 import db from 'db';
 import { notes } from 'db/schema';
-import { and, eq, gte } from 'drizzle-orm';
+import { and, asc, desc, eq, gte } from 'drizzle-orm';
 import { createHandler } from '../../lib/factory';
 import { getNotesByPeriod, getPeriodStart } from '../../lib/utils';
 import {
@@ -16,7 +16,8 @@ export const list = createHandler(listRoute, async (c) => {
   const allNotes = await db
     .select()
     .from(notes)
-    .where(eq(notes.userId, user.id));
+    .where(eq(notes.userId, user.id))
+    .orderBy(desc(notes.createdAt));
 
   return c.json({ notes: allNotes }, 200);
 });
@@ -32,7 +33,8 @@ export const stats = createHandler(statsRoute, async (c) => {
   const notesInPeriod = await db
     .select()
     .from(notes)
-    .where(and(eq(notes.userId, user.id), gte(notes.createdAt, from)));
+    .where(and(eq(notes.userId, user.id), gte(notes.createdAt, from)))
+    .orderBy(asc(notes.createdAt));
 
   const notesByPeriod = getNotesByPeriod(notesInPeriod, granularity);
 
