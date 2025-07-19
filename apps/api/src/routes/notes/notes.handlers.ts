@@ -28,8 +28,6 @@ export const stats = createHandler(statsRoute, async (c) => {
 
   const from = getPeriodStart(granularity);
 
-  const totalNotes = await db.$count(notes, eq(notes.userId, user.id));
-
   const notesInPeriod = await db
     .select()
     .from(notes)
@@ -38,7 +36,7 @@ export const stats = createHandler(statsRoute, async (c) => {
 
   const notesByPeriod = getNotesByPeriod(notesInPeriod, granularity);
 
-  return c.json({ stats: notesByPeriod, total: totalNotes }, 200);
+  return c.json({ stats: notesByPeriod }, 200);
 });
 
 export const create = createHandler(createRoute, async (c) => {

@@ -1,5 +1,5 @@
 import { createFileRoute, Link, Navigate } from '@tanstack/react-router';
-import EmailSignIn from '@/components/email-sign-in';
+import CredentialsAuth from '@/components/credentials-auth';
 import {
   Card,
   CardContent,
@@ -21,7 +21,7 @@ function RouteComponent() {
   }
 
   return (
-    <div className="p-4">
+    <div className="p-4 pt-10">
       <div className="mx-auto max-w-md">
         <Card className="w-full">
           <CardHeader>
@@ -32,10 +32,10 @@ function RouteComponent() {
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
-              <EmailSignIn signup />
+              <CredentialsAuth signup />
               <div className="text-center text-sm">
                 Already have an account?{' '}
-                <Link className="underline underline-offset-4" to="/">
+                <Link className="underline underline-offset-4" to="/login">
                   Login
                 </Link>
               </div>

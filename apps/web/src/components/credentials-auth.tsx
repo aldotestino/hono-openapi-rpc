@@ -14,16 +14,16 @@ import {
 import { Input } from '@/components/ui/input';
 import { authClient } from '@/lib/auth';
 
-const emailSignInSchema = z.object({
+const credentialsAuthSchema = z.object({
   email: z.email(),
   password: z.string().min(3),
 });
 
-type EmailSignIn = z.infer<typeof emailSignInSchema>;
+type CredentialsAuth = z.infer<typeof credentialsAuthSchema>;
 
-function EmailSignIn({ signup = false }: { signup?: boolean }) {
+function CredentialsAuth({ signup = false }: { signup?: boolean }) {
   const form = useForm({
-    resolver: zodResolver(emailSignInSchema),
+    resolver: zodResolver(credentialsAuthSchema),
     defaultValues: {
       email: '',
       password: '',
@@ -32,7 +32,7 @@ function EmailSignIn({ signup = false }: { signup?: boolean }) {
 
   const router = useRouter();
 
-  function onSubmit(values: EmailSignIn) {
+  function onSubmit(values: CredentialsAuth) {
     if (signup) {
       authClient.signUp.email(
         {
@@ -98,11 +98,11 @@ function EmailSignIn({ signup = false }: { signup?: boolean }) {
           )}
         />
         <Button className="w-full" type="submit">
-          {signup ? 'Sign up' : 'Sign in'}
+          {signup ? 'Sign up' : 'Login'}
         </Button>
       </form>
     </Form>
   );
 }
 
-export default EmailSignIn;
+export default CredentialsAuth;

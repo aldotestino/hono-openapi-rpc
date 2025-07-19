@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthedSettingsRouteImport } from './routes/_authed/settings'
@@ -19,6 +20,11 @@ import { Route as AuthedNotesNewRouteImport } from './routes/_authed/notes/new'
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthedRoute = AuthedRouteImport.update({
@@ -48,6 +54,7 @@ const AuthedNotesNewRoute = AuthedNotesNewRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/settings': typeof AuthedSettingsRoute
   '/notes/new': typeof AuthedNotesNewRoute
@@ -55,6 +62,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/settings': typeof AuthedSettingsRoute
   '/notes/new': typeof AuthedNotesNewRoute
@@ -64,6 +72,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authed': typeof AuthedRouteWithChildren
+  '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/_authed/settings': typeof AuthedSettingsRoute
   '/_authed/notes/new': typeof AuthedNotesNewRoute
@@ -71,13 +80,14 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/signup' | '/settings' | '/notes/new' | '/notes'
+  fullPaths: '/' | '/login' | '/signup' | '/settings' | '/notes/new' | '/notes'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/signup' | '/settings' | '/notes/new' | '/notes'
+  to: '/' | '/login' | '/signup' | '/settings' | '/notes/new' | '/notes'
   id:
     | '__root__'
     | '/'
     | '/_authed'
+    | '/login'
     | '/signup'
     | '/_authed/settings'
     | '/_authed/notes/new'
@@ -87,6 +97,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthedRoute: typeof AuthedRouteWithChildren
+  LoginRoute: typeof LoginRoute
   SignupRoute: typeof SignupRoute
 }
 
@@ -97,6 +108,13 @@ declare module '@tanstack/react-router' {
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authed': {
@@ -155,6 +173,7 @@ const AuthedRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthedRoute: AuthedRouteWithChildren,
+  LoginRoute: LoginRoute,
   SignupRoute: SignupRoute,
 }
 export const routeTree = rootRouteImport

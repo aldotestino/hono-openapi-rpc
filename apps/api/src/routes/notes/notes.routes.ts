@@ -40,7 +40,6 @@ export const stats = createRoute({
         'application/json': {
           schema: z.object({
             stats: z.array(statsSchema),
-            total: z.number(),
           }),
         },
       },

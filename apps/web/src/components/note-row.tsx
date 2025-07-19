@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { format } from 'date-fns';
 import type { Note } from 'db/schema';
 import { Loader, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -26,21 +27,23 @@ function NoteRow({
 
   return (
     <div className="mx-auto max-w-5xl space-y-2 p-4">
-      <div className="flex items-center justify-between gap-4">
-        <p className="flex items-center gap-2">
-          <span className="text-muted-foreground text-sm">{note.id}</span>
-          <span className="font-semibold text-lg">{note.title}</span>
+      <div>
+        <div className="flex items-center justify-between gap-4">
+          <p className="font-semibold text-lg">{note.title}</p>
+          <Button
+            className="cursor-pointer"
+            onClick={() => mutateAsync()}
+            size="icon"
+            variant="ghost"
+          >
+            {isPending ? <Loader className="animate-spin" /> : <Trash2 />}
+          </Button>
+        </div>
+        <p className="text-muted-foreground text-sm">
+          {format(new Date(note.createdAt), 'MMM d, yyyy')}
         </p>
-        <Button
-          className="cursor-pointer"
-          onClick={() => mutateAsync()}
-          size="icon"
-          variant="ghost"
-        >
-          {isPending ? <Loader className="animate-spin" /> : <Trash2 />}
-        </Button>
       </div>
-      <p className="text-muted-foreground">{note.description}</p>
+      <p className="text-lg">{note.description}</p>
     </div>
   );
 }

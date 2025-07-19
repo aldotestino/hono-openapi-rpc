@@ -9,7 +9,7 @@ function AuthedLayout() {
   const { data, isPending } = authClient.useSession();
 
   if (!(data?.session.userId || isPending)) {
-    return <Navigate to="/" />;
+    return <Navigate to="/login" />;
   }
 
   return <Outlet />;

@@ -6,6 +6,7 @@
     "includes": [
       "**/*",
       "!**/components/ui/**",
+      "!**/components/magicui/**",
       "!**/routeTree.gen.ts",
       "!**/reportWebVitals.ts",
       "!**/styles.css"
