@@ -7,17 +7,8 @@ export type AppEnv = {
   // biome-ignore lint/complexity/noBannedTypes: this is a placeholder for bindings
   Bindings: {};
   Variables: {
-    user: typeof auth.$Infer.Session.user | null;
-    session: typeof auth.$Infer.Session.session | null;
-  };
-};
-
-// Environment for authorized routes where user and session are guaranteed to be non-null
-export type AuthorizedAppEnv = {
-  Bindings: AppEnv['Bindings'];
-  Variables: {
-    user: NonNullable<typeof auth.$Infer.Session.user>;
-    session: NonNullable<typeof auth.$Infer.Session.session>;
+    user: typeof auth.$Infer.Session.user;
+    session: typeof auth.$Infer.Session.session;
   };
 };
 
@@ -29,8 +20,3 @@ export type AppOpenAPI<S extends Schema = {}> = OpenAPIHono<
 >;
 
 export type AppRouteHandler<R extends RouteConfig> = RouteHandler<R, AppEnv>;
-
-export type AuthorizedAppRouteHandler<R extends RouteConfig> = RouteHandler<
-  R,
-  AuthorizedAppEnv
->;

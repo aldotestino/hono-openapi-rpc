@@ -19,9 +19,8 @@ function NoteRow({
         },
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['notes'],
-      });
+      queryClient.invalidateQueries({ queryKey: ['notes'] });
+      queryClient.invalidateQueries({ queryKey: ['stats'] });
     },
   });
 

@@ -6,9 +6,6 @@ export const withAuth = createMiddleware(async (c, next) => {
   const session = await auth.api.getSession({ headers: c.req.raw.headers });
 
   if (!session) {
-    c.set('user', null);
-    c.set('session', null);
-
     return next();
   }
 
@@ -18,10 +15,10 @@ export const withAuth = createMiddleware(async (c, next) => {
   return next();
 });
 
-export const requireAuth = createMiddleware(async (c, next) => {
+export const requireAuth = createMiddleware((c, next) => {
   if (!c.get('user')) {
     throw new UnauthorizedError('Unauthorized');
   }
 
-  return await next();
+  return next();
 });

@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createFileRoute, useRouter } from '@tanstack/react-router';
 import { type InsertNote, insertNotesSchema } from 'db/schema';
 import { ArrowLeft, Loader, Plus } from 'lucide-react';
@@ -38,6 +38,7 @@ function NewNotePage() {
   });
 
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: (data: InsertNote) =>
@@ -45,6 +46,8 @@ function NewNotePage() {
         json: data,
       }),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['notes'] });
+      queryClient.invalidateQueries({ queryKey: ['stats'] });
       router.navigate({
         to: '/notes',
       });

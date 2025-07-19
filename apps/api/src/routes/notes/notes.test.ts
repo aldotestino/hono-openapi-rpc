@@ -1,4 +1,5 @@
 import { afterAll, beforeAll, describe, expect, test } from 'bun:test';
+import { format } from 'date-fns';
 import db from 'db';
 import { user } from 'db/schema';
 import { eq } from 'drizzle-orm';
@@ -47,6 +48,25 @@ describe('🗒️ Notes', () => {
     const { notes } = await response.json();
 
     expect(notes.map((note) => note.id)).toContain(createdNoteId);
+  });
+
+  test('verify stats are correct', async () => {
+    const response = await client.api.notes.stats.$get({
+      query: {
+        granularity: 'day',
+      },
+    });
+    const { stats, total } = await response.json();
+
+    const period = format(new Date(), 'MMM d');
+
+    expect(response.status).toBe(200);
+    expect(stats).toBeArray();
+    expect(stats).toContainEqual({
+      period,
+      notes: 1,
+    });
+    expect(total).toBe(1);
   });
 
   test('should delete a note', async () => {

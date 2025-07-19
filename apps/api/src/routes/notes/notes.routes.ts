@@ -1,6 +1,7 @@
 import { createRoute } from '@hono/zod-openapi';
 import { insertNotesSchema, notesSchema } from 'db/schema';
 import z from 'zod/v4';
+import { granularitySchema, statsSchema } from '../../lib/utils';
 
 const tags = ['Notes'];
 const basePath = '/notes';
@@ -16,6 +17,30 @@ export const list = createRoute({
         'application/json': {
           schema: z.object({
             notes: z.array(notesSchema),
+          }),
+        },
+      },
+    },
+  },
+});
+
+export const stats = createRoute({
+  path: `${basePath}/stats`,
+  method: 'get',
+  tags,
+  request: {
+    query: z.object({
+      granularity: granularitySchema,
+    }),
+  },
+  responses: {
+    200: {
+      description: 'Notes stats',
+      content: {
+        'application/json': {
+          schema: z.object({
+            stats: z.array(statsSchema),
+            total: z.number(),
           }),
         },
       },

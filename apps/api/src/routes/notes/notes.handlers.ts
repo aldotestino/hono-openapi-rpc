@@ -1,14 +1,16 @@
 import db from 'db';
 import { notes } from 'db/schema';
-import { and, eq } from 'drizzle-orm';
-import { createAuthorizedHandler } from '../../lib/factory';
+import { and, eq, gte } from 'drizzle-orm';
+import { createHandler } from '../../lib/factory';
+import { getNotesByPeriod, getPeriodStart } from '../../lib/utils';
 import {
   create as createRoute,
   list as listRoute,
   remove as removeRoute,
+  stats as statsRoute,
 } from './notes.routes';
 
-export const list = createAuthorizedHandler(listRoute, async (c) => {
+export const list = createHandler(listRoute, async (c) => {
   const user = c.get('user');
 
   const allNotes = await db
@@ -19,7 +21,25 @@ export const list = createAuthorizedHandler(listRoute, async (c) => {
   return c.json({ notes: allNotes }, 200);
 });
 
-export const create = createAuthorizedHandler(createRoute, async (c) => {
+export const stats = createHandler(statsRoute, async (c) => {
+  const { granularity } = c.req.valid('query');
+  const user = c.get('user');
+
+  const from = getPeriodStart(granularity);
+
+  const totalNotes = await db.$count(notes, eq(notes.userId, user.id));
+
+  const notesInPeriod = await db
+    .select()
+    .from(notes)
+    .where(and(eq(notes.userId, user.id), gte(notes.createdAt, from)));
+
+  const notesByPeriod = getNotesByPeriod(notesInPeriod, granularity);
+
+  return c.json({ stats: notesByPeriod, total: totalNotes }, 200);
+});
+
+export const create = createHandler(createRoute, async (c) => {
   const note = c.req.valid('json');
 
   const user = c.get('user');
@@ -35,7 +55,7 @@ export const create = createAuthorizedHandler(createRoute, async (c) => {
   return c.json(createdNote, 201);
 });
 
-export const remove = createAuthorizedHandler(removeRoute, async (c) => {
+export const remove = createHandler(removeRoute, async (c) => {
   const id = c.req.param('id');
   const parsedId = Number.parseInt(id, 10);
 

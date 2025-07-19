@@ -7,12 +7,7 @@ import { requireAuth, withAuth } from '../middlewares/auth';
 import { onError } from '../middlewares/error';
 import { auth } from './auth';
 import { BASE_PATH, TEST_USER } from './constants';
-import type {
-  AppEnv,
-  AppOpenAPI,
-  AppRouteHandler,
-  AuthorizedAppRouteHandler,
-} from './types';
+import type { AppEnv, AppOpenAPI, AppRouteHandler } from './types';
 
 export function createRouter() {
   return new OpenAPIHono<AppEnv>({
@@ -60,13 +55,6 @@ export function createHandler<R extends RouteConfig>(
   _config: R,
   handler: AppRouteHandler<R>
 ): AppRouteHandler<R> {
-  return handler;
-}
-
-export function createAuthorizedHandler<R extends RouteConfig>(
-  _config: R,
-  handler: AuthorizedAppRouteHandler<R>
-): AuthorizedAppRouteHandler<R> {
   return handler;
 }
 
