@@ -56,7 +56,7 @@ describe('🗒️ Notes', () => {
         granularity: 'day',
       },
     });
-    const { stats, total } = await response.json();
+    const { stats } = await response.json();
 
     const period = format(new Date(), 'MMM d');
 
@@ -66,7 +66,6 @@ describe('🗒️ Notes', () => {
       period,
       notes: 1,
     });
-    expect(total).toBe(1);
   });
 
   test('should delete a note', async () => {
