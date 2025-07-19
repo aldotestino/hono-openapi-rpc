@@ -1,38 +1,63 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { createFileRoute } from '@tanstack/react-router';
-import { Inbox, Loader } from 'lucide-react';
-import NoteRow from '@/components/note-row';
-import { notesQuery } from '@/lib/api/queries';
+import { createFileRoute, Link, Navigate } from '@tanstack/react-router';
+import { FaGithub } from 'react-icons/fa';
+import EmailSignIn from '@/components/email-sign-in';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { authClient } from '@/lib/auth';
 
 export const Route = createFileRoute('/')({
-  loader: ({ context: { queryClient } }) =>
-    queryClient.ensureQueryData(notesQuery),
-  component: App,
-  pendingComponent: () => (
-    <div className="flex h-full flex-col items-center justify-center gap-2 text-muted-foreground">
-      <Loader className="size-10 animate-spin" />
-      <p className="font-semibold">Loading notes...</p>
-    </div>
-  ),
+  component: RouteComponent,
 });
 
-function App() {
-  const { data } = useSuspenseQuery(notesQuery);
+function RouteComponent() {
+  const { data } = authClient.useSession();
 
-  if (data.length === 0) {
-    return (
-      <div className="flex h-full flex-col items-center justify-center gap-2 text-muted-foreground">
-        <Inbox className="size-10" />
-        <p className="font-semibold">No notes yet!</p>
-      </div>
-    );
+  if (data?.session.userId) {
+    return <Navigate to="/notes" />;
   }
 
   return (
-    <div className="h-full overflow-y-auto">
-      {data.map((note) => (
-        <NoteRow key={note.id} note={note} />
-      ))}
+    <div className="p-4">
+      <div className="mx-auto max-w-md">
+        <Card className="w-full">
+          <CardHeader>
+            <CardTitle>Login to your account</CardTitle>
+            <CardDescription>
+              Enter your email below to login to your account
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-6">
+              <EmailSignIn />
+              <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-border after:border-t">
+                <span className="relative z-10 bg-background px-2 text-muted-foreground">
+                  Or continue with
+                </span>
+              </div>
+              <Button
+                className="w-full"
+                onClick={() => authClient.signIn.social({ provider: 'github' })}
+                variant="outline"
+              >
+                <FaGithub />
+                Login with GitHub
+              </Button>
+              <div className="text-center text-sm">
+                Don&apos;t have an account?{' '}
+                <Link className="underline underline-offset-4" to="/signup">
+                  Sign up
+                </Link>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

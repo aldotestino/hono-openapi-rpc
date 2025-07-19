@@ -1,5 +1,5 @@
-import { configOpenApi } from './lib/config-open-api';
-import { createApp } from './lib/create-app';
+import { createApp } from './lib/factory';
+import { configOpenApi } from './lib/open-api';
 import { registerRoutes } from './routes';
 
 const app = registerRoutes(createApp());

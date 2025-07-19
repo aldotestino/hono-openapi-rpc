@@ -14,11 +14,13 @@
     "typescript": "^5"
   },
   "exports": {
-    "./client": "./src/api-client.ts"
+    "./client": "./src/api-client.ts",
+    "./auth": "./src/lib/auth.ts"
   },
   "dependencies": {
     "@hono/zod-openapi": "^1.0.0-beta.1",
     "@scalar/hono-api-reference": "^0.9.6",
+    "better-auth": "^1.2.12",
     "db": "workspace:*",
     "drizzle-orm": "^0.44.2",
     "hono": "^4.8.2",

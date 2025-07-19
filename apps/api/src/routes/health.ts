@@ -1,12 +1,13 @@
 import { createRoute } from '@hono/zod-openapi';
 import { z } from 'zod/v4';
-import { createRouter } from '../lib/create-router';
-import type { AppRouteHandler } from '../lib/types';
+import { STATUS_OK } from '../lib/constants';
+import { createHandler, createRouter } from '../lib/factory';
 
 const tags = ['Health'];
+const basePath = '/health';
 
 const healthRoute = createRoute({
-  path: '/',
+  path: basePath,
   method: 'get',
   tags,
   responses: {
@@ -15,7 +16,7 @@ const healthRoute = createRoute({
       content: {
         'application/json': {
           schema: z.object({
-            status: z.literal('ok'),
+            status: z.literal(STATUS_OK),
           }),
         },
       },
@@ -23,8 +24,9 @@ const healthRoute = createRoute({
   },
 });
 
-const healthHandler: AppRouteHandler<typeof healthRoute> = (c) =>
-  c.json({ status: 'ok' });
+const healthHandler = createHandler(healthRoute, (c) =>
+  c.json({ status: STATUS_OK })
+);
 
 const router = createRouter().openapi(healthRoute, healthHandler);
 
