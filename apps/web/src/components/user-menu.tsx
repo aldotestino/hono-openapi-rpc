@@ -1,5 +1,5 @@
 import { useRouter } from '@tanstack/react-router';
-import { LogOut } from 'lucide-react';
+import { LogOut, Notebook, Settings } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -30,7 +30,9 @@ function UserMenu() {
       <DropdownMenuTrigger>
         <Avatar>
           <AvatarImage src={data?.user.image || undefined} />
-          <AvatarFallback>{data?.user.name.charAt(0)}</AvatarFallback>
+          <AvatarFallback>
+            {data?.user.email.charAt(0).toUpperCase()}
+          </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
@@ -40,6 +42,19 @@ function UserMenu() {
             <p className="text-muted-foreground text-xs">{data?.user.email}</p>
           </div>
         </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem onClick={() => router.navigate({ to: '/notes' })}>
+            <Notebook />
+            Notes
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => router.navigate({ to: '/settings' })}
+          >
+            <Settings />
+            Settings
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem onClick={handleSignOut} variant="destructive">

@@ -26,7 +26,7 @@ function NoteRow({
   });
 
   return (
-    <div className="space-y-2 border-b p-4">
+    <div className="mx-auto max-w-5xl space-y-2 p-4">
       <div className="flex items-center justify-between gap-4">
         <p className="flex items-center gap-2">
           <span className="text-muted-foreground text-sm">{note.id}</span>

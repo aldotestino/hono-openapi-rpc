@@ -11,10 +11,8 @@ interface MyRouterContext {
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: () => (
     <>
-      <div className="mx-auto grid h-screen w-full max-w-screen-lg grid-rows-[auto_1fr] overflow-y-hidden">
-        <Header />
-        <Outlet />
-      </div>
+      <Header />
+      <Outlet />
       <TanStackRouterDevtools />
       <TanStackQueryLayout />
     </>

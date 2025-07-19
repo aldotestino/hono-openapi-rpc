@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { createFileRoute, useRouter } from '@tanstack/react-router';
 import { type InsertNote, insertNotesSchema } from 'db/schema';
-import { Loader, Plus } from 'lucide-react';
+import { ArrowLeft, Loader, Plus } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import {
@@ -59,7 +59,7 @@ function NewNotePage() {
   }
 
   return (
-    <div className="overflow-y-auto p-4">
+    <div className="mx-auto max-w-5xl p-4">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <Card>
@@ -103,14 +103,24 @@ function NewNotePage() {
               </div>
             </CardContent>
             <CardFooter className="flex justify-end">
-              <Button
-                className="cursor-pointer"
-                disabled={isPending}
-                type="submit"
-              >
-                {isPending ? <Loader className="animate-spin" /> : <Plus />}
-                Create Note
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button
+                  onClick={() => router.navigate({ to: '/notes' })}
+                  type="button"
+                  variant="outline"
+                >
+                  <ArrowLeft />
+                  Back
+                </Button>
+                <Button
+                  className="cursor-pointer"
+                  disabled={isPending}
+                  type="submit"
+                >
+                  {isPending ? <Loader className="animate-spin" /> : <Plus />}
+                  Create Note
+                </Button>
+              </div>
             </CardFooter>
           </Card>
         </form>

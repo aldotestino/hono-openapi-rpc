@@ -6,9 +6,9 @@ export const Route = createFileRoute('/_authed')({
 });
 
 function AuthedLayout() {
-  const { data } = authClient.useSession();
+  const { data, isPending } = authClient.useSession();
 
-  if (!data?.session.userId) {
+  if (!(data?.session.userId || isPending)) {
     return <Navigate to="/" />;
   }
 

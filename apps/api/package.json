@@ -14,7 +14,8 @@
     "typescript": "^5"
   },
   "exports": {
-    "./client": "./src/api-client.ts"
+    "./client": "./src/api-client.ts",
+    "./auth": "./src/lib/auth.ts"
   },
   "dependencies": {
     "@hono/zod-openapi": "^1.0.0-beta.1",

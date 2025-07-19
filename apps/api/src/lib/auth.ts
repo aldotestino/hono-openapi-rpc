@@ -1,7 +1,9 @@
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
-import { openAPI } from 'better-auth/plugins';
+import { customSession, openAPI } from 'better-auth/plugins';
 import db from 'db';
+import { account } from 'db/schema';
+import { eq } from 'drizzle-orm';
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -21,6 +23,18 @@ export const auth = betterAuth({
   plugins: [
     openAPI({
       disableDefaultReference: true,
+    }),
+    customSession(async ({ user, session }) => {
+      const userAccount = await db
+        .select()
+        .from(account)
+        .where(eq(account.userId, session.userId));
+
+      return {
+        provider: userAccount[0]?.providerId,
+        user,
+        session,
+      };
     }),
   ],
 });
