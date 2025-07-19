@@ -9,7 +9,7 @@ function Header() {
   const { data } = authClient.useSession();
 
   return (
-    <header className="sticky top-0 border-b bg-background/20 shadow-xs backdrop-blur-sm">
+    <header className="sticky top-0 z-10 border-b bg-background/60 shadow-xs backdrop-blur-md">
       <div className="mx-auto flex max-w-5xl items-center justify-between p-4">
         <Link to="/">
           <h1 className="font-bold text-2xl">Notes</h1>
