@@ -12,11 +12,9 @@ export type AppEnv = {
   };
 };
 
-// biome-ignore lint/complexity/noBannedTypes: this is needed for the rpc client types
-export type AppOpenAPI<S extends Schema = {}> = OpenAPIHono<
-  AppEnv,
-  S,
-  typeof BASE_PATH
->;
+export type AppOpenAPI<
+  // biome-ignore lint/complexity/noBannedTypes: this is needed for the rpc client types
+  S extends Schema = {},
+> = OpenAPIHono<AppEnv, S, typeof BASE_PATH>;
 
 export type AppRouteHandler<R extends RouteConfig> = RouteHandler<R, AppEnv>;

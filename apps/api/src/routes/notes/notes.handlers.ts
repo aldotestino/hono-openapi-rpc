@@ -1,16 +1,16 @@
 import db from 'db';
 import { notes } from 'db/schema';
 import { and, asc, desc, eq, gte } from 'drizzle-orm';
-import { createHandler } from '../../lib/factory';
+import type { AppRouteHandler } from '../../lib/types';
 import { getNotesByPeriod, getPeriodStart } from '../../lib/utils';
-import {
+import type {
   create as createRoute,
   list as listRoute,
   remove as removeRoute,
   stats as statsRoute,
 } from './notes.routes';
 
-export const list = createHandler(listRoute, async (c) => {
+export const list: AppRouteHandler<typeof listRoute> = async (c) => {
   const user = c.get('user');
 
   const allNotes = await db
@@ -20,9 +20,9 @@ export const list = createHandler(listRoute, async (c) => {
     .orderBy(desc(notes.createdAt));
 
   return c.json({ notes: allNotes }, 200);
-});
+};
 
-export const stats = createHandler(statsRoute, async (c) => {
+export const stats: AppRouteHandler<typeof statsRoute> = async (c) => {
   const { granularity } = c.req.valid('query');
   const user = c.get('user');
 
@@ -37,9 +37,9 @@ export const stats = createHandler(statsRoute, async (c) => {
   const notesByPeriod = getNotesByPeriod(notesInPeriod, granularity);
 
   return c.json({ stats: notesByPeriod }, 200);
-});
+};
 
-export const create = createHandler(createRoute, async (c) => {
+export const create: AppRouteHandler<typeof createRoute> = async (c) => {
   const note = c.req.valid('json');
 
   const user = c.get('user');
@@ -53,9 +53,9 @@ export const create = createHandler(createRoute, async (c) => {
     .returning();
 
   return c.json(createdNote, 201);
-});
+};
 
-export const remove = createHandler(removeRoute, async (c) => {
+export const remove: AppRouteHandler<typeof removeRoute> = async (c) => {
   const id = c.req.param('id');
   const parsedId = Number.parseInt(id, 10);
 
@@ -72,4 +72,4 @@ export const remove = createHandler(removeRoute, async (c) => {
   }
 
   return c.body(null, 204);
-});
+};

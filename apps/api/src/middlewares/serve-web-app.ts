@@ -1,8 +1,9 @@
+import type { MiddlewareHandler } from 'hono';
 import { serveStatic } from 'hono/bun';
 import { BASE_PATH, STATIC_FILE_REGEX } from '../lib/constants';
-import { createMiddleware } from '../lib/factory';
+import type { AppEnv } from '../lib/types';
 
-export const serveWebApp = createMiddleware((c, next) => {
+export const serveWebApp: MiddlewareHandler<AppEnv> = (c, next) => {
   // Skip if it's an API route
   if (c.req.path.startsWith(BASE_PATH)) {
     return next();
@@ -15,4 +16,4 @@ export const serveWebApp = createMiddleware((c, next) => {
 
   // For SPA routes (like /notes/new), serve index.html
   return serveStatic({ path: '/index.html', root: './public' })(c, next);
-});
+};

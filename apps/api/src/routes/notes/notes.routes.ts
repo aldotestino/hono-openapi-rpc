@@ -2,6 +2,7 @@ import { createRoute } from '@hono/zod-openapi';
 import { insertNotesSchema, notesSchema } from 'db/schema';
 import z from 'zod/v4';
 import { granularitySchema, statsSchema } from '../../lib/utils';
+import { requireAuth } from '../../middlewares/auth';
 
 const tags = ['Notes'];
 const basePath = '/notes';
@@ -10,6 +11,7 @@ export const list = createRoute({
   path: basePath,
   method: 'get',
   tags,
+  middleware: [requireAuth],
   responses: {
     200: {
       description: 'All notes',
@@ -28,6 +30,7 @@ export const stats = createRoute({
   path: `${basePath}/stats`,
   method: 'get',
   tags,
+  middleware: [requireAuth],
   request: {
     query: z.object({
       granularity: granularitySchema,
@@ -51,6 +54,7 @@ export const create = createRoute({
   path: basePath,
   method: 'post',
   tags,
+  middleware: [requireAuth],
   request: {
     body: {
       content: {
@@ -76,6 +80,7 @@ export const remove = createRoute({
   path: `${basePath}/:id`,
   method: 'delete',
   tags,
+  middleware: [requireAuth],
   request: {
     params: z.object({
       id: z.coerce.number().int().positive(),

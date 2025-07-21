@@ -1,13 +1,13 @@
-import { OpenAPIHono, type RouteConfig } from '@hono/zod-openapi';
-import type { MiddlewareHandler, Schema } from 'hono';
+import { OpenAPIHono } from '@hono/zod-openapi';
+import type { Schema } from 'hono';
 import { logger } from 'hono/logger';
 import { requestId } from 'hono/request-id';
-import { requireAuth, withAuth } from '../middlewares/auth';
+import { withAuth } from '../middlewares/auth';
 import { onError } from '../middlewares/error';
 import { serveWebApp } from '../middlewares/serve-web-app';
 import { auth } from './auth';
 import { BASE_PATH, TEST_USER } from './constants';
-import type { AppEnv, AppOpenAPI, AppRouteHandler } from './types';
+import type { AppEnv, AppOpenAPI } from './types';
 
 export function createRouter() {
   return new OpenAPIHono<AppEnv>({
@@ -27,7 +27,6 @@ export function createApp({ useLogger = true }: { useLogger?: boolean } = {}) {
       return auth.handler(c.req.raw);
     })
     .use(withAuth)
-    .use('/notes/*', requireAuth)
     .onError(onError);
 
   return app;
@@ -43,15 +42,4 @@ export function createTestApp<S extends Schema>(router: AppOpenAPI<S>) {
     .basePath(BASE_PATH)
     .route('/', router)
     .onError(onError);
-}
-
-export function createHandler<R extends RouteConfig>(
-  _config: R,
-  handler: AppRouteHandler<R>
-): AppRouteHandler<R> {
-  return handler;
-}
-
-export function createMiddleware(middleware: MiddlewareHandler<AppEnv>) {
-  return middleware;
 }
